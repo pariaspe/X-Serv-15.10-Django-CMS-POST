@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseNotFound
 
 from .models import Pages
 
@@ -17,5 +18,9 @@ def barra(request):
     return HttpResponse(answer)
 
 def other(request, recurso):
-    page = Pages.objects.get(name=recurso)
-    return HttpResponse(page.page)
+    try:
+        page = Pages.objects.get(name=recurso)
+        return HttpResponse(page.page)
+    except Pages.DoesNotExist:
+        answer = 'La pagina ' + recurso + ' no está guardada.'
+        return HttpResponseNotFound(answer)
