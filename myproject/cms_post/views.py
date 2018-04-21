@@ -15,3 +15,7 @@ def barra(request):
     answer = '<h1>Sistema de gestión de contenido</h1>'
     answer += lista
     return HttpResponse(answer)
+
+def other(request, recurso):
+    page = Pages.objects.get(name=recurso)
+    return HttpResponse(page.page)
