@@ -26,12 +26,21 @@ def barra(request):
     answer += get_log(request.user.is_authenticated(), request.user.username)
     return HttpResponse(answer)
 
-def annotated(request, recurso):
+def annotated_barra(request):
+    pages = Pages.objects.all()
+    lista = 'Paginas guardadas:<ul>'
+    for page in pages:
+        lista += '<li><a href="' + page.name + '">' + page.name + '</a></li>'
+    lista += '</lu>'
+    title = '<h1>Sistema de gestión de contenido</h1>'
+    content = lista
+    content += get_log(request.user.is_authenticated(), request.user.username)
+
     template = get_template("annotated.html")
 
     return HttpResponse(template.render(
-            Context({'title': 'user',
-            'content': 'resource'})))
+            Context({'title': title,
+            'content': content})))
 
 def other(request, recurso):
     try:
@@ -43,3 +52,21 @@ def other(request, recurso):
         answer = 'La pagina ' + recurso + ' no está guardada.'
         answer += '<p><a href="/">Inicio</a></p>'
         return HttpResponseNotFound(answer)
+
+def annotated_other(request, recurso):
+    try:
+        page = Pages.objects.get(name=recurso)
+        content = '<p><a href="/">Inicio</a></p>'
+        content += get_log(request.user.is_authenticated(), request.user.username)
+
+        template = get_template("annotated.html")
+        return HttpResponse(template.render(
+                Context({'title': page.page,
+                'content': content})))
+    except Pages.DoesNotExist:
+        answer = 'La pagina ' + recurso + ' no está guardada.'
+        answer += '<p><a href="/">Inicio</a></p>'
+
+        template = get_template("annotated.html")
+        return HttpResponse(template.render(
+                Context({'title': answer})))
