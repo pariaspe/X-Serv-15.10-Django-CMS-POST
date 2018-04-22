@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^login', login),
     url(r'^annotated/$', 'cms_post.views.annotated_barra'),
     url(r'^annotated/(.*)$', 'cms_post.views.annotated_other'),
+    url(r'^edit/(.*)$', 'cms_post.views.edit'),
     url(r'^$', 'cms_post.views.barra'),
     url(r'^(.*)$', 'cms_post.views.other'),
 ]
