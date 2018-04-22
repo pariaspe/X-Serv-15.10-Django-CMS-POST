@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseNotFound
+from django.template.loader import get_template
+from django.template import Context
 
 from .models import Pages
 
@@ -23,6 +25,13 @@ def barra(request):
     answer += lista
     answer += get_log(request.user.is_authenticated(), request.user.username)
     return HttpResponse(answer)
+
+def annotated(request, recurso):
+    template = get_template("annotated.html")
+
+    return HttpResponse(template.render(
+            Context({'title': 'user',
+            'content': 'resource'})))
 
 def other(request, recurso):
     try:
